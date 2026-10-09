@@ -1,0 +1,43 @@
+---
+import { site } from '../config/site';
+import { getT, langs, localePath, type Lang, type PageKey } from '../i18n';
+export interface Props {
+  lang: Lang;
+  page?: PageKey;
+  title: string;
+  description?: string;
+  path?: string;
+  image?: string;
+  noindex?: boolean;
+}
+const { lang, page, title, description, path = '/', image = '/og-default.jpg', noindex = false } = Astro.props;
+const t = getT(lang);
+const desc = description ?? t.description;
+const root = (Astro.site?.toString() ?? site.url).replace(/\/$/, '');
+const abs = (p: string) => new URL(p, root + '/').toString();
+const canonical = abs(path);
+const imageUrl = abs(image);
+const full = path === '/' || path === `/${lang}` ? title : `${title} · ${site.name}`;
+// 404 no declara alternativas
+const alternates = page === undefined ? [] : langs.map((l) => ({ l, href: abs(localePath(l, page)), hreflang: getT(l).hreflang }));
+---
+
+<title>{full}</title>
+<meta name="description" content={desc} />
+<link rel="canonical" href={canonical} />
+{alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+{alternates.length > 0 && <link rel="alternate" hreflang="x-default" href={abs(localePath('es', page))} />}
+<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
+<meta name="theme-color" content="#06283a" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={full} />
+<meta property="og:description" content={desc} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:locale" content={t.ogLocale} />
+{alternates.filter((a) => a.l !== lang).map((a) => <meta property="og:locale:alternate" content={getT(a.l).ogLocale} />)}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={full} />
+<meta name="twitter:description" content={desc} />
+<meta name="twitter:image" content={imageUrl} />

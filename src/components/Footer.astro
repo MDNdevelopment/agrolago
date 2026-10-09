@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import { site } from '../config/site';
+import { getT, localePath, type Lang } from '../i18n';
+import { logos } from '../data/media';
+import Social from './Social.astro';
+import Waves from './Waves.astro';
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = getT(lang);
+const pages = (['nosotros', 'productos', 'procesos', 'contacto'] as const).map((k) => ({ label: t.nav[k], href: localePath(lang, k) }));
+---
+
+<footer class="footer">
+  <Waves placement="top" />
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <Image class="footer-logo" src={logos.blanco} width={260} alt="Agrolago de Occidente" loading="lazy" />
+        <p style="margin-top:1.25rem;max-width:34ch;opacity:.8">{t.tagline}</p>
+      </div>
+      <div>
+        <h3>{t.footer.office}</h3>
+        <ul>
+          <li>{site.address.street}</li>
+          <li>{site.address.city}, {site.address.region}, Venezuela</li>
+          <li><a href={`tel:${site.phoneHref}`}>{site.phone}</a></li>
+          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        </ul>
+        <Social />
+      </div>
+      <div>
+        <h3>{t.footer.group}</h3>
+        <ul>
+          {t.footer.group_items.map((g) => <li>{g}</li>)}
+        </ul>
+      </div>
+      <div>
+        <h3>{t.footer.pages}</h3>
+        <ul>
+          {pages.map((p) => <li><a href={p.href}>{p.label}</a></li>)}
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {new Date().getFullYear()} {site.legalName} · RIF {site.rif} · {t.ui.rights}</span>
+      {site.credit && <span>{t.ui.credit}</span>}
+    </div>
+  </div>
+</footer>

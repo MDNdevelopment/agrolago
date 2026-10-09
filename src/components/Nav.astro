@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+import { site } from '../config/site';
+import { getT, langs, localePath, type Lang, type PageKey } from '../i18n';
+import { logos } from '../data/media';
+export interface Props {
+  lang: Lang;
+  page?: PageKey;
+  /** true cuando la página abre con un hero oscuro: el header arranca en blanco */
+  dark?: boolean;
+}
+const { lang, page = '', dark = false } = Astro.props;
+const t = getT(lang);
+const links = (['', 'nosotros', 'productos', 'procesos', 'contacto'] as const).map((k) => ({
+  key: k,
+  label: t.nav[k || 'inicio'],
+  href: localePath(lang, k),
+}));
+const switchTo = langs.map((l) => ({ l, label: getT(l).label, native: getT(l).native, hreflang: getT(l).hreflang, href: localePath(l, page) }));
+---
+
+<a class="skip-link" href="#main">{t.ui.skip}</a>
+<header class="nav" data-nav data-theme={dark ? 'dark' : 'light'}>
+  <div class="wrap nav-inner">
+    <a class="nav-brand" href={localePath(lang)} aria-label={t.ui.homeAria}>
+      <Image class="logo-on-dark" src={logos.blanco} width={320} alt="" loading="eager" />
+      <Image class="logo-on-light" src={logos.color} width={320} alt="" loading="eager" />
+    </a>
+    <nav aria-label={t.ui.mainNav}>
+      <ul class="nav-links">
+        {links.map((l) => (
+          <li><a href={l.href} aria-current={l.key === page ? 'page' : undefined}>{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <ul class="lang" aria-label={t.ui.langNav}>
+      {switchTo.map((s) => (
+        <li><a href={s.href} lang={s.hreflang} hreflang={s.hreflang} aria-current={s.l === lang ? 'true' : undefined} data-astro-reload>{s.label}</a></li>
+      ))}
+    </ul>
+    <a class="btn btn-solid nav-cta" href={localePath(lang, 'contacto')}>{t.ui.cta}</a>
+    <button class="nav-burger" type="button" aria-expanded="false" aria-controls="menu" aria-label={t.ui.menuOpen} data-label-open={t.ui.menuOpen} data-label-close={t.ui.menuClose} data-menu-toggle>
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="menu" id="menu" hidden data-menu>
+  <ul class="menu-links">
+    {links.map((l) => (
+      <li class="menu-link" data-menu-link><a href={l.href}>{l.label}</a></li>
+    ))}
+    <li class="menu-link" data-menu-link><a href={localePath(lang, 'contacto')}>{t.ui.cta}</a></li>
+  </ul>
+  <ul class="menu-lang" aria-label={t.ui.langNav}>
+    {switchTo.map((s) => (
+      <li><a href={s.href} lang={s.hreflang} hreflang={s.hreflang} aria-current={s.l === lang ? 'true' : undefined} data-astro-reload>{s.native}</a></li>
+    ))}
+  </ul>
+  <div class="menu-foot">
+    <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
+    <a href={`mailto:${site.email}`}>{site.email}</a>
+  </div>
+</div>
+
+<noscript>
+  <style>
+    .nav-links { display: flex !important; flex-wrap: wrap; }
+    .nav-burger { display: none !important; }
+  </style>
+</noscript>

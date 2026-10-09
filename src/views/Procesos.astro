@@ -1,0 +1,127 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Media from '../components/Media.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaEnd from '../components/CtaEnd.astro';
+import { getT, localePath, type Lang } from '../i18n';
+import { procesoFotos, certificados, fotos } from '../data/media';
+import { breadcrumbSchema } from '../lib/schema';
+
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = getT(lang);
+const p = t.procesos;
+---
+
+<Base {lang} page="procesos" title={p.title} description={p.description} jsonLd={[breadcrumbSchema([{ name: 'Agrolago', path: localePath(lang) }, { name: t.nav.procesos, path: localePath(lang, 'procesos') }])]}>
+  <Nav {lang} page="procesos" dark />
+  <main id="main">
+    <PageHero title={p.hero.title} intro={p.hero.intro} image={fotos.cosecha} next="soft" />
+
+    <!-- 12 etapas: frame sticky con crossfade -->
+    <section class="section section-soft">
+      <div class="wrap">
+        <div class="steps" data-steps data-rail-host>
+          <div class="steps-rail" aria-hidden="true"><i data-rail></i></div>
+          <ol class="steps-list">
+            {p.steps.map((s, i) => (
+              <li class="step" data-step>
+                {/* sello-ok: numeracion — las 12 etapas son una secuencia real y el cliente aprobó numerarlas */}
+                <span class="step-n">{String(i + 1).padStart(2, '0')}</span>
+                <h2>{s.title}</h2>
+                <p>{s.text}</p>
+              </li>
+            ))}
+          </ol>
+          <div class="steps-frame">
+            {p.steps.map((s, i) => (
+              <div class="steps-shot" data-shot>
+                <Media src={procesoFotos[i]} alt={s.title} ratio="4 / 5" eager={i === 0} sizes="(min-width: 900px) 40vw, 100vw" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trazabilidad: la ruta del lote se dibuja con el scroll -->
+    <section class="lot section-dark" data-route>
+      <div class="lot-media" aria-hidden="true">
+        <Media src={fotos.recepcion} alt="" sizes="100vw" />
+      </div>
+      <div class="wrap lot-copy">
+        <div class="head-row">
+          <h2 class="h-title" data-split>{p.trace.title}</h2>
+          <p class="lead" data-fade>{p.trace.intro}</p>
+        </div>
+        <div class="lot-wrap">
+          <span class="lot-line" aria-hidden="true"><i data-route-fill></i></span>
+          <ul class="lot-stops">
+            {p.trace.stops.map((st) => (
+              <li class="lot-stop" data-route-node>
+                <span class="lot-dot" data-route-dot aria-hidden="true"></span>
+                <div data-route-text>
+                  <h3>{st.title}</h3>
+                  <p>{st.text}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <ul class="lot-kinds">
+          {p.trace.kinds.map((k) => (
+            <li data-fade>
+              <h3>{k.title}</h3>
+              <p>{k.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Documentos -->
+    <section class="section" id="documentos">
+      <div class="wrap">
+        <div class="head-row">
+          <h2 class="h-title" data-split>{p.docsTitle}</h2>
+          <p class="lead" data-fade>{p.docsIntro}</p>
+        </div>
+        <ul class="docs" data-shutter>
+          {p.docs.map((d, i) => (
+            <li class="doc">
+              <a href={certificados[i].src} target="_blank" rel="noopener" aria-label={`${t.ui.openDoc}: ${d.title}`}>
+                <Media src={certificados[i]} alt="" ratio="3 / 4" sizes="(min-width: 900px) 22vw, 46vw" />
+                <h3>{d.title}</h3>
+                <p>{d.text}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Política de calidad -->
+    <section class="section section-soft">
+      <figure class="wrap quality">
+        <blockquote class="statement" data-split>{p.quality.quote}</blockquote>
+        <figcaption data-fade>— {p.quality.author}</figcaption>
+        <p class="lead" data-fade>{p.quality.text}</p>
+      </figure>
+      <div class="wrap policy-grid">
+        <h2 class="h-title" data-split>{p.policyTitle}</h2>
+        <ul class="policy" data-batch-group>
+          {p.policy.map((x) => (
+            <li data-batch>{x}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <CtaEnd {lang} image={fotos.almacenamiento} />
+  </main>
+  <Footer {lang} />
+</Base>

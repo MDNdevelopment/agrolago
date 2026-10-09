@@ -1,0 +1,49 @@
+---
+import Media from './Media.astro';
+import type { ImageMetadata } from 'astro';
+import { site } from '../config/site';
+import { getT, localePath, type Lang } from '../i18n';
+export interface Props {
+  lang: Lang;
+  title?: string;
+  text?: string;
+  variant?: 'box' | 'phrase';
+  /** Foto de fondo de la caja. Usar una distinta en cada página. */
+  image?: ImageMetadata;
+}
+const { lang, title, text, variant = 'box', image } = Astro.props;
+const t = getT(lang);
+const heading = title ?? t.cta.title;
+const body = variant === 'box' ? (text ?? t.cta.text) : undefined;
+const contact = localePath(lang, 'contacto');
+---
+
+{variant === 'box' ? (
+  <section class="section cta-end">
+    <div class="wrap">
+      <div class:list={['cta-box section-dark', { 'has-photo': !!image }]} data-box>
+        {image && (
+          <div class="cta-photo" aria-hidden="true">
+            <Media src={image} alt="" sizes="(min-width: 900px) 80vw, 100vw" />
+          </div>
+        )}
+        <h2 class="h-title" data-box-words>{heading}</h2>
+        {body && <p class="lead" data-box-item>{body}</p>}
+        <div class="cta-actions" data-box-item>
+          <a class="btn btn-solid" href={contact}>{t.cta.primary}</a>
+          <a class="btn" href={`mailto:${site.email}`}>{site.email}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+) : (
+  <section class="section section-dark cta-end">
+    <div class="wrap">
+      <p class="statement" data-scrub data-scrub-floor="0.6">{heading}</p>
+      <div class="cta-actions" data-fade style="margin-top:2.5rem">
+        <a class="btn btn-solid" href={contact}>{t.cta.primary}</a>
+        <a class="btn" href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
+    </div>
+  </section>
+)}

@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Social from '../components/Social.astro';
+import { site } from '../config/site';
+import { fotos } from '../data/media';
+import { getT, localePath, type Lang } from '../i18n';
+import { breadcrumbSchema } from '../lib/schema';
+
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = getT(lang);
+const c = t.contacto;
+---
+
+<Base {lang} page="contacto" title={c.title} description={c.description} jsonLd={[breadcrumbSchema([{ name: 'Agrolago', path: localePath(lang) }, { name: t.nav.contacto, path: localePath(lang, 'contacto') }])]}>
+  <Nav {lang} page="contacto" dark />
+  <main id="main">
+    <PageHero title={c.hero.title} intro={c.hero.intro} image={fotos.master} />
+
+    <section class="section">
+      <div class="wrap contact-grid">
+        <div class="contact-form" data-fade>
+          <ContactForm {lang} />
+        </div>
+        <div class="contact-info">
+          <h2 class="contact-big" data-split>{c.officeTitle}</h2>
+          <ul class="contact-data" data-fade data-fade-delay="150">
+            <li>{site.address.street}</li>
+            <li>{site.address.city}, {site.address.region}, Venezuela</li>
+            <li><a href={`tel:${site.phoneHref}`}>{site.phone}</a></li>
+            <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+            <li>{c.rif} {site.rif}</li>
+          </ul>
+          <Social />
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="map" data-wipe>
+          <iframe title={c.mapTitle} src={site.mapEmbed} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer {lang} />
+</Base>

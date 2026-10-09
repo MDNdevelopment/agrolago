@@ -1,0 +1,89 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# ---- Redirecciones desde el sitio anterior (WordPress + Polylang) ----
+# Blog y noticias: se eliminan
+[[redirects]]
+  from = "/noticias/*"
+  to = "/"
+  status = 301
+[[redirects]]
+  from = "/noticias"
+  to = "/"
+  status = 301
+
+# Inglés
+[[redirects]]
+  from = "/en/home"
+  to = "/en"
+  status = 301
+[[redirects]]
+  from = "/en/about-us"
+  to = "/en/nosotros"
+  status = 301
+[[redirects]]
+  from = "/en/products"
+  to = "/en/productos"
+  status = 301
+[[redirects]]
+  from = "/en/processes"
+  to = "/en/procesos"
+  status = 301
+[[redirects]]
+  from = "/en/contact"
+  to = "/en/contacto"
+  status = 301
+
+# Chino (los slugs viejos eran caracteres chinos)
+[[redirects]]
+  from = "/zh/%e8%81%8c%e6%9d%83"
+  to = "/zh"
+  status = 301
+[[redirects]]
+  from = "/zh/%e5%85%b3%e4%ba%8e%e6%88%91%e4%bb%ac"
+  to = "/zh/nosotros"
+  status = 301
+[[redirects]]
+  from = "/zh/%e4%ba%a7%e5%93%81"
+  to = "/zh/productos"
+  status = 301
+[[redirects]]
+  from = "/zh/%e6%b5%81%e7%a8%8b"
+  to = "/zh/procesos"
+  status = 301
+[[redirects]]
+  from = "/zh/%e8%81%94%e7%b3%bb"
+  to = "/zh/contacto"
+  status = 301
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/llms.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "geolocation=(), camera=(), microphone=(), interest-cohort=()"

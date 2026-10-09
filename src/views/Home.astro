@@ -1,0 +1,110 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Media from '../components/Media.astro';
+import HeroPanels from '../components/HeroPanels.astro';
+import CtaEnd from '../components/CtaEnd.astro';
+import { getT, localePath, type Lang } from '../i18n';
+import { fotos, procesoFotos } from '../data/media';
+
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = getT(lang);
+const h = t.home;
+
+const panelPhotos = [fotos.cultivo, fotos.seleccion, fotos.exportacion];
+const routePhotos = [procesoFotos[0], procesoFotos[1], procesoFotos[6], procesoFotos[10], procesoFotos[11]];
+const productPhotos = [fotos.seleccion, fotos.clasificacion, fotos.valorAgregado];
+const panels = h.panels.map((p) => ({ ...p, href: localePath(lang, p.href) }));
+---
+
+<Base {lang} page="" title={h.title}>
+  <Nav {lang} page="" dark />
+  <main id="main">
+    <!-- 1. Hero: paneles de la cadena -->
+    <HeroPanels label={h.carouselLabel} panels={panels} photos={panelPhotos} />
+
+    <!-- 2. Banda de valor: foto a ancho completo con la frase encima -->
+    <section class="band section-dark">
+      <div class="band-media" data-wipe aria-hidden="true">
+        <Media src={fotos.valorAgregado} alt="" sizes="100vw" />
+      </div>
+      <div class="wrap band-copy">
+        <p class="statement" data-scrub data-scrub-floor="0.55">{h.band.statement}</p>
+        <p class="band-facts" data-fade>{h.band.facts}</p>
+      </div>
+    </section>
+
+    <!-- 3. Ruta de la larva al contenedor: la línea se dibuja con el scroll -->
+    <section class="section route" data-route>
+      <div class="wrap">
+        <div class="head-row">
+          <h2 class="h-title" data-split>{h.chain.title}</h2>
+          <a class="link-arrow" href={localePath(lang, 'procesos')} data-fade>{h.chain.all}</a>
+        </div>
+        <div class="route-wrap">
+          <span class="route-line" aria-hidden="true"><i data-route-fill></i></span>
+          <ul class="route-list">
+            {h.chain.steps.map((s, i) => (
+              <li class="route-node" data-route-node>
+                <div class="route-dot" data-route-dot>
+                  <Media src={routePhotos[i]} alt="" ratio="1 / 1" sizes="(min-width: 900px) 12vw, 96px" />
+                </div>
+                <div class="route-text" data-route-text>
+                  <h3>{s.title}</h3>
+                  <p>{s.text}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Productos -->
+    <section class="section section-soft">
+      <div class="wrap">
+        <div class="head-row">
+          <h2 class="h-title" data-split>{h.products.title}</h2>
+          <a class="link-arrow" href={localePath(lang, 'productos')} data-fade>{h.products.all}</a>
+        </div>
+        <ul class="product-cards" data-shutter>
+          {h.products.items.map((s, i) => (
+            <li class="product-card">
+              <a href={localePath(lang, 'productos')}>
+                <Media src={productPhotos[i]} alt="" ratio="4 / 5" sizes="(min-width: 900px) 30vw, 100vw" />
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5. Certificaciones -->
+    <section class="section section-dark">
+      <div class="wrap certs">
+        <div class="certs-intro">
+          <h2 class="h-title" data-split>{h.certs.title}</h2>
+          <p class="lead" data-fade>{h.certs.intro}</p>
+          <a class="link-arrow" href={`${localePath(lang, 'procesos')}#documentos`} data-fade>{h.certs.link}</a>
+        </div>
+        <ul class="cert-list" data-shutter>
+          {h.certs.items.map((c) => (
+            <li class="cert-row">
+              <h3 class="cert-name">{c.name}</h3>
+              <p class="cert-text">{c.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <CtaEnd {lang} image={fotos.exportacion} />
+  </main>
+  <Footer {lang} />
+</Base>

@@ -1,0 +1,147 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Media from '../components/Media.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaEnd from '../components/CtaEnd.astro';
+import { getT, localePath, type Lang } from '../i18n';
+import { fotos, valoresFotos, procesoFotos } from '../data/media';
+import { breadcrumbSchema } from '../lib/schema';
+
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = getT(lang);
+const n = t.nosotros;
+const storyPhotos = [fotos.cultivos, fotos.produccion, fotos.congelamiento];
+const groupPhotos = [fotos.master, fotos.seleccion, fotos.cultivo];
+const allyPhotos = [fotos.cosecha, procesoFotos[0], fotos.exportacion];
+---
+
+<Base {lang} page="nosotros" title={n.title} description={n.description} jsonLd={[breadcrumbSchema([{ name: 'Agrolago', path: localePath(lang) }, { name: t.nav.nosotros, path: localePath(lang, 'nosotros') }])]}>
+  <Nav {lang} page="nosotros" dark />
+  <main id="main">
+    <PageHero title={n.hero.title} intro={n.hero.intro} image={fotos.respeto} next="soft" />
+
+    <!-- Historia: frame sticky con crossfade -->
+    <section class="section section-soft">
+      <div class="wrap">
+        <div class="steps" data-steps data-rail-host>
+          <div class="steps-rail" aria-hidden="true"><i data-rail></i></div>
+          <ol class="steps-list">
+            {n.story.map((s) => (
+              <li class="step" data-step>
+                <h2>{s.title}</h2>
+                <p>{s.text}</p>
+              </li>
+            ))}
+          </ol>
+          <div class="steps-frame">
+            {n.story.map((_, i) => (
+              <div class="steps-shot" data-shot>
+                <Media src={storyPhotos[i]} alt="" ratio="4 / 5" eager={i === 0} sizes="(min-width: 900px) 40vw, 100vw" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Misión y visión -->
+    <section class="section">
+      <div class="wrap mv">
+        <div class="mv-photo" data-wipe>
+          <Media src={fotos.recepcion} alt="" ratio="4 / 5" sizes="(min-width: 900px) 40vw, 100vw" />
+        </div>
+        <div class="mv-texts">
+          <div>
+            <h2 class="h-title" data-split>{n.mission.title}</h2>
+            <p class="mv-text" data-lines>{n.mission.text}</p>
+          </div>
+          <div>
+            <h2 class="h-title" data-split>{n.vision.title}</h2>
+            <p class="mv-text" data-lines>{n.vision.text}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Planta Lago Pack -->
+    <section class="section">
+      <div class="wrap mv is-flip">
+        <div class="mv-photo" data-wipe>
+          <Media src={fotos.produccion} alt="" ratio="4 / 5" sizes="(min-width: 900px) 40vw, 100vw" />
+        </div>
+        <div class="mv-texts">
+          <div>
+            <h2 class="h-title" data-split>{n.plant.title}</h2>
+            <p class="mv-text" data-lines>{n.plant.text}</p>
+            <ul class="policy plant-points" data-batch-group>
+              {n.plant.points.map((x) => (
+                <li data-batch>{x}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Valores: tarjetas que se apilan al hacer scroll -->
+    <section class="section section-soft">
+      <div class="wrap">
+        <h2 class="h-title" data-split style="max-width:16ch">{n.valuesTitle}</h2>
+        <ul class="stack" data-stack>
+          {n.values.map((v, i) => (
+            <li class="stack-card" data-stack-card data-audit-ignore style={`--i:${i}`}>
+              <div class="stack-inner" data-stack-inner>
+                <div class="stack-media">
+                  <Media src={valoresFotos[i]} alt="" sizes="(min-width: 900px) 50vw, 100vw" />
+                </div>
+                <div class="stack-copy">
+                  <h3>{v.title}</h3>
+                  <p>{v.text}</p>
+                </div>
+                <span class="stack-dim" data-stack-dim aria-hidden="true"></span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Grupo y alianzas: mosaico de fotos -->
+    <section class="section section-dark">
+      <div class="wrap">
+        <h2 class="h-title" data-split>{n.groupTitle}</h2>
+        <ul class="mosaic" data-shutter>
+          {n.group.map((m, i) => (
+            <li class={`mosaic-card mosaic-g${i}`}>
+              <div class="mosaic-media"><Media src={groupPhotos[i]} alt="" sizes="(min-width: 900px) 55vw, 100vw" /></div>
+              <div class="mosaic-copy">
+                <h3>{m.name}</h3>
+                <p>{m.role}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <h2 class="h-title mosaic-sub" data-split>{n.alliesTitle}</h2>
+        <ul class="mosaic mosaic-allies" data-shutter>
+          {n.allies.map((a, i) => (
+            <li class="mosaic-card is-ally">
+              <div class="mosaic-media"><Media src={allyPhotos[i]} alt="" sizes="(min-width: 900px) 34vw, 100vw" /></div>
+              <div class="mosaic-copy">
+                <h3>{a.title}</h3>
+                <p>{a.text}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <CtaEnd {lang} variant="phrase" title={n.cta} />
+  </main>
+  <Footer {lang} />
+</Base>

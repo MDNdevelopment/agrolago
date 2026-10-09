@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { getT } from '../i18n';
+const es = getT('es');
+---
+
+<Base lang="es" title="Gracias" noindex>
+  <Nav lang="es" />
+  <main id="main" class="section" style="min-height:70svh;display:grid;align-items:center">
+    <div class="wrap">
+      <h1 class="h-hero" data-split data-hero>Gracias.</h1>
+      <p class="lead" style="margin-top:1.5rem">{es.contacto.form.ok}</p>
+      <a class="btn btn-solid" style="margin-top:2rem" href="/">{es.ui.notFoundBack}</a>
+    </div>
+  </main>
+  <Footer lang="es" />
+</Base>

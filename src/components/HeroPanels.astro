@@ -1,0 +1,51 @@
+---
+import Media from './Media.astro';
+import type { ImageMetadata } from 'astro';
+export interface Props {
+  label: string;
+  panels: { label: string; title: string; text: string; cta: string; href: string }[];
+  photos: ImageMetadata[];
+}
+const { label, panels, photos } = Astro.props;
+---
+
+<!-- Hero de paneles: el panel activo se expande y los demás quedan como franjas con su nombre. -->
+<section class="panels" data-panels data-hero-root aria-label={label}>
+  <div class="panels-track">
+    {panels.map((p, i) => (
+      <article class:list={['panel', { 'is-active': i === 0 }]} data-panel>
+        <div class="panel-media" data-panel-media>
+          <Media src={photos[i]} alt="" eager={i === 0} sizes="(min-width: 900px) 70vw, 100vw" />
+        </div>
+        <div class="panel-shade" aria-hidden="true"></div>
+        <div class="panel-dim" data-panel-dim aria-hidden="true"></div>
+        <button type="button" class="panel-tab" data-panel-tab aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`panel-body-${i}`}>
+          <span class="panel-label">{p.label}</span>
+        </button>
+        <div class="panel-body" id={`panel-body-${i}`} data-panel-body inert={i !== 0}>
+          <div class="panel-copy">
+            {i === 0 ? (
+              <h1 class="panel-title" data-panel-title data-hero>{p.title}</h1>
+            ) : (
+              <h2 class="panel-title" data-panel-title>{p.title}</h2>
+            )}
+            <p class="panel-text" data-panel-rest data-hero-rest>{p.text}</p>
+            <a class="btn btn-solid" href={p.href} data-panel-rest data-hero-rest>{p.cta}</a>
+          </div>
+          <span class="panel-progress" aria-hidden="true"><i data-panel-bar></i></span>
+        </div>
+      </article>
+    ))}
+  </div>
+  <div class="panels-veil" aria-hidden="true"></div>
+</section>
+
+<noscript>
+  <style>
+    .panels { height: auto; }
+    .panels-track { flex-direction: column; }
+    .panel { min-height: 70svh; flex-grow: 1; }
+    .panel-body { opacity: 1; pointer-events: auto; }
+    .panel-label, .panel-tab { display: none; }
+  </style>
+</noscript>

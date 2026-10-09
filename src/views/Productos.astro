@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Media from '../components/Media.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import CtaEnd from '../components/CtaEnd.astro';
+import { getT, localePath, type Lang } from '../i18n';
+import { fotos } from '../data/media';
+import { breadcrumbSchema, faqSchema } from '../lib/schema';
+
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = getT(lang);
+const p = t.productos;
+const photos = [fotos.seleccion, fotos.clasificacion, fotos.valorAgregado];
+---
+
+<Base {lang} page="productos" title={p.title} description={p.description} jsonLd={[breadcrumbSchema([{ name: 'Agrolago', path: localePath(lang) }, { name: t.nav.productos, path: localePath(lang, 'productos') }]), faqSchema(p.faqs)]}>
+  <Nav {lang} page="productos" dark />
+  <main id="main">
+    <PageHero title={p.hero.title} intro={p.hero.intro} image={fotos.estuches} />
+
+    <!-- Fichas de producto: foto grande y datos al lado, alternando el lado -->
+    <section class="section">
+      <div class="wrap">
+        <ul class="sheets">
+          {p.items.map((s, i) => (
+            <li class:list={['sheet', { 'is-flip': i % 2 === 1 }]}>
+              <div class="sheet-media" data-wipe>
+                <Media src={photos[i]} alt={s.title} ratio="4 / 3" sizes="(min-width: 900px) 52vw, 100vw" />
+              </div>
+              <div class="sheet-copy">
+                <h2 class="sheet-title" data-split>{s.title}</h2>
+                <p class="lead" data-fade>{s.text}</p>
+                <dl class="sheet-specs" data-batch-group>
+                  {s.specs.map((sp) => (
+                    <div class="sheet-spec" data-batch>
+                      <dt>{sp.name}</dt>
+                      <dd>{sp.text}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <a class="link-arrow" href={localePath(lang, 'contacto')}>{p.quote} →</a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Congelación y empaque -->
+    <section class="section section-soft">
+      <div class="wrap pack-grid">
+        <div class="pack-media" data-wipe>
+          <Media src={fotos.master} alt="" ratio="4 / 5" sizes="(min-width: 900px) 40vw, 100vw" />
+        </div>
+        <div>
+          <h2 class="h-title" data-split>{p.packTitle}</h2>
+          <ol class="pack" data-skew>
+            {p.pack.map((s) => (
+              <li class="pack-row">
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap faq-grid">
+        <h2 class="h-title" data-split>{p.faqTitle}</h2>
+        <Faq items={p.faqs} />
+      </div>
+    </section>
+
+    <CtaEnd {lang} title={p.cta.title} text={p.cta.text} image={fotos.congelamiento} />
+  </main>
+  <Footer {lang} />
+</Base>

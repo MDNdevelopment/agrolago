@@ -1,0 +1,8 @@
+---
+import Procesos from '../../views/Procesos.astro';
+import { langStaticPaths, type Lang } from '../../i18n';
+export const getStaticPaths = langStaticPaths;
+const { lang } = Astro.props as { lang: Lang };
+---
+
+<Procesos {lang} />

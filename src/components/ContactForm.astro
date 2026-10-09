@@ -1,0 +1,58 @@
+---
+import { site } from '../config/site';
+import { getT, type Lang } from '../i18n';
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const f = getT(lang).contacto.form;
+---
+
+<!-- Netlify Forms: el atributo data-netlify registra el formulario al desplegar. Sin JS, el envío nativo también funciona. -->
+<form
+  name="cotizacion"
+  method="POST"
+  action="/gracias"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  data-quote-form
+  data-ok={f.ok}
+  data-fail={f.fail}
+  data-sending={f.sending}
+  class="quote-form"
+>
+  <input type="hidden" name="form-name" value="cotizacion" />
+  <input type="hidden" name="idioma" value={lang} />
+  <p class="sr-only" aria-hidden="true"><label>No llenar: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+  <div class="field">
+    <label for="f-nombre">{f.name}</label>
+    <input id="f-nombre" name="nombre" type="text" required autocomplete="name" />
+  </div>
+  <div class="field">
+    <label for="f-empresa">{f.company}</label>
+    <input id="f-empresa" name="empresa" type="text" autocomplete="organization" />
+  </div>
+  <div class="field">
+    <label for="f-email">{f.email}</label>
+    <input id="f-email" name="email" type="email" required autocomplete="email" />
+  </div>
+  <div class="field-pair">
+    <div class="field">
+      <label for="f-pais">{f.country}</label>
+      <input id="f-pais" name="pais" type="text" autocomplete="country-name" />
+    </div>
+    <div class="field">
+      <label for="f-tel">{f.phone}</label>
+      <input id="f-tel" name="telefono" type="tel" autocomplete="tel" />
+    </div>
+  </div>
+  <div class="field">
+    <label for="f-mensaje">{f.message}</label>
+    <textarea id="f-mensaje" name="mensaje" required></textarea>
+  </div>
+  <button class="btn btn-solid" type="submit" data-submit>{f.send}</button>
+  <p class="form-status" role="status" aria-live="polite" data-status></p>
+  <noscript>
+    <p>{f.noscript} <a href={`mailto:${site.email}`}>{site.email}</a></p>
+  </noscript>
+</form>
