@@ -96,14 +96,21 @@ const allyPhotos = [fotos.cosecha, procesoFotos[0], fotos.exportacion];
           {n.values.map((v, i) => (
             <li class="stack-card" data-stack-card data-audit-ignore style={`--i:${i}`}>
               <div class="stack-inner" data-stack-inner>
-                <div class="stack-media">
-                  <Media src={valoresFotos[i]} alt="" sizes="(min-width: 900px) 50vw, 100vw" />
+                <div class="stack-tab" aria-hidden="true">
+                  <span class="stack-num">{String(i + 1).padStart(2, '0')}</span>
+                  <span>{v.title}</span>
+                  <span class="stack-count">{String(i + 1).padStart(2, '0')} / {String(n.values.length).padStart(2, '0')}</span>
                 </div>
-                <div class="stack-copy">
-                  <h3>{v.title}</h3>
-                  <p>{v.text}</p>
+                <div class="stack-body">
+                  <div class="stack-media" data-stack-media>
+                    <Media src={valoresFotos[i]} alt="" sizes="100vw" />
+                  </div>
+                  <div class="stack-copy">
+                    <h3>{v.title}</h3>
+                    <p>{v.text}</p>
+                  </div>
+                  <span class="stack-dim" data-stack-dim aria-hidden="true"></span>
                 </div>
-                <span class="stack-dim" data-stack-dim aria-hidden="true"></span>
               </div>
             </li>
           ))}

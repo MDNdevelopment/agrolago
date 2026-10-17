@@ -6,9 +6,9 @@ export const es = {
   hreflang: 'es',
   label: 'ES',
   native: 'Español',
-  tagline: 'Camarón congelado de Zulia, listo para exportar',
+  tagline: 'Camarón congelado del Zulia, listo para exportar',
   description:
-    'Agrolago de Occidente cultiva, procesa y exporta camarón congelado desde Zulia, Venezuela. Entero, cola y valor agregado, con trazabilidad por lote.',
+    'Agrolago de Occidente cultiva, procesa y exporta camarón congelado desde el Zulia, Venezuela. Entero, cola y valor agregado, con trazabilidad por lote.',
 
   ui: {
     skip: 'Saltar al contenido',
@@ -43,7 +43,7 @@ export const es = {
   },
 
   home: {
-    title: 'Agrolago · Camarón congelado de Zulia para exportación',
+    title: 'Agrolago · Camarón congelado del Zulia para exportación',
     carouselLabel: 'Lo que hacemos',
     panels: [
       {
@@ -71,14 +71,14 @@ export const es = {
     band: {
       statement:
         'Cultivo, planta y exportación dentro del mismo grupo. Cada lote que despachamos lleva un código, y con él podemos reconstruir su recorrido.',
-      facts: 'Desde 2011 en Zulia. Doce etapas controladas, de la larvicultura a la exportación. Cuatro regiones de destino: Europa, Norteamérica, Asia y Sudamérica.',
+      facts: 'Desde 2011 en el Zulia. Doce etapas controladas, de la larvicultura a la exportación. Cuatro regiones de destino: Europa, Norteamérica, Asia y Sudamérica.',
     },
     chain: {
       title: 'De la larva al contenedor',
       all: 'Ver las 12 etapas →',
       steps: [
         { title: 'Larvas', text: 'Un laboratorio de cría de larvas abastece a nuestras granjas y a las de terceros, con acuerdos formales de suministro.' },
-        { title: 'Granjas', text: 'Granjas propias y aliadas en Zulia producen el camarón que llega a nuestra planta.' },
+        { title: 'Granjas', text: 'Granjas propias y aliadas en el Zulia producen el camarón que llega a nuestra planta.' },
         { title: 'Planta Lago Pack', text: 'Recepción, selección, clasificación, valor agregado, empaque y congelación bajo control de calidad.' },
         { title: 'Cavas a −18 °C', text: 'El producto congelado se conserva en cavas hasta el momento del despacho.' },
         { title: 'Exportación', text: 'Trámites aduanales y empresas de logística en el exterior para almacenar y distribuir.' },
@@ -109,14 +109,14 @@ export const es = {
   nosotros: {
     title: 'Nosotros',
     description:
-      'Agrolago de Occidente inició actividades en 2011 en Zulia. Hoy integra granjas, planta de procesamiento y exportación de camarón.',
+      'Agrolago de Occidente inició actividades en 2011 en el Zulia. Hoy integra granjas, planta de procesamiento y exportación de camarón.',
     hero: {
       title: 'Un grupo que cultiva, procesa y exporta.',
       intro: 'Agrolago de Occidente inició actividades en 2011, en el estado Zulia. Hoy integra granjas, planta y exportación bajo un mismo grupo, con un equipo de profesionales con experiencia que construye relaciones comerciales beneficiosas para todas las partes.',
     },
     story: [
       {
-        title: 'Empezamos en Zulia',
+        title: 'Empezamos en el Zulia',
         text: 'En 2011 Agrolago de Occidente, C.A. comienza a comercializar y exportar productos de la pesca y la acuicultura desde una zona con condiciones excepcionales para cultivar camarón.',
       },
       {
@@ -157,11 +157,11 @@ export const es = {
     group: [
       { name: 'Agrolago de Occidente, C.A.', role: 'Comercialización y exportación' },
       { name: 'Lago Pack, C.A.', role: 'Planta de procesamiento' },
-      { name: 'Granjas camaroneras', role: 'Producción propia en Zulia' },
+      { name: 'Granjas camaroneras', role: 'Producción propia en el Zulia' },
     ],
     alliesTitle: 'Alianzas',
     allies: [
-      { title: 'Granjas en Zulia', text: 'Alianzas en materia prima, compra de equipos, asistencia técnica y financiamiento, con granjas de altos rendimientos.' },
+      { title: 'Granjas en el Zulia', text: 'Alianzas en materia prima, compra de equipos, asistencia técnica y financiamiento, con granjas de altos rendimientos.' },
       { title: 'Laboratorio de larvas', text: 'Acuerdos formales de suministro con un laboratorio de cría de larvas de camarón.' },
       { title: 'Almacenamiento y logística', text: 'Empresas en el exterior que almacenan y distribuyen nuestros productos.' },
     ],

@@ -1496,6 +1496,7 @@ main:has(> .section-dark:last-child) + .footer .waves-top :is(.wave-a, .wave-b, 
 
 /* ---------- Nosotros: valores como tarjetas apiladas (sticky, sin pin de GSAP) ---------- */
 .stack {
+  --tab-h: clamp(52px, 5vw, 64px);
   list-style: none;
   margin: clamp(2rem, 4vw, 3rem) 0 0;
   padding: 0;
@@ -1504,57 +1505,106 @@ main:has(> .section-dark:last-child) + .footer .waves-top :is(.wave-a, .wave-b, 
 }
 .stack-inner {
   position: relative;
-  display: grid;
   border-radius: 28px;
   overflow: hidden;
   background: var(--color-dark);
   color: var(--color-dark-ink);
-  transform-origin: 50% 0;
 }
-.stack-media {
+.stack-tab {
+  height: var(--tab-h);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 clamp(1.25rem, 3vw, 2.25rem);
+  background: var(--color-dark);
+  border-top: 1px solid color-mix(in srgb, var(--color-dark-ink) 12%, transparent);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+  letter-spacing: -0.02em;
+}
+.stack-num {
+  font-size: 0.75em;
+  font-weight: 500;
+  opacity: 0.5;
+  font-variant-numeric: tabular-nums;
+}
+.stack-count {
+  margin-left: auto;
+  font-size: 0.7em;
+  font-weight: 500;
+  opacity: 0.5;
+  font-variant-numeric: tabular-nums;
+}
+.stack-body {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 5;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
 }
+.stack-media,
 .stack-media .media {
   position: absolute;
   inset: 0;
   height: 100%;
 }
+.stack-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to top, var(--color-dark) 0%, color-mix(in srgb, var(--color-dark) 70%, transparent) 35%, transparent 70%),
+    linear-gradient(to right, color-mix(in srgb, var(--color-dark) 55%, transparent), transparent 60%);
+}
 .stack-copy {
+  position: relative;
+  z-index: 2;
   padding: clamp(1.5rem, 4vw, 3rem);
   display: grid;
-  gap: 0.9rem;
-  align-content: center;
+  gap: 0.6rem;
 }
 .stack-copy h3 {
   font-size: clamp(2rem, 3.8vw, 3.4rem);
 }
 .stack-copy p {
   font-size: var(--text-lead);
-  max-width: 34ch;
-  color: color-mix(in srgb, var(--color-dark-ink) 82%, transparent);
+  max-width: 38ch;
+  color: color-mix(in srgb, var(--color-dark-ink) 85%, transparent);
 }
 .stack-dim {
   position: absolute;
   inset: 0;
+  z-index: 3;
   background: var(--color-dark);
   opacity: 0;
   pointer-events: none;
 }
 @media (min-width: 901px) {
+  .stack {
+    gap: 0;
+  }
   .stack-card {
     position: sticky;
-    top: calc(var(--header-h) + 1rem + var(--i, 0) * 1.25rem);
+    top: calc(var(--header-h) + 1rem + var(--i, 0) * var(--tab-h));
   }
+  .stack-card:not(:last-child) {
+    margin-bottom: 30svh;
+  }
+  /* Apiladas, las tarjetas del medio van rectas: con esquinas redondeadas dejarían ver la foto de la anterior en los huecos */
   .stack-inner {
-    grid-template-columns: 1fr 1fr;
-    height: clamp(360px, 56svh, 520px);
+    border-radius: 0;
   }
-  .stack-media {
+  .stack-card:first-child .stack-inner {
+    border-radius: 28px 28px 0 0;
+  }
+  .stack-card:last-child .stack-inner {
+    border-radius: 0 0 28px 28px;
+  }
+  .stack-body {
     aspect-ratio: auto;
-  }
-  .stack-card:nth-child(even) .stack-media {
-    order: 2;
+    height: max(380px, calc(100svh - var(--header-h) - 2rem - 4 * var(--tab-h)));
   }
 }
 

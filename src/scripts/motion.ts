@@ -141,7 +141,7 @@ function declarative() {
   $$('[data-wipe]').forEach((el) => {
     const inner = el.querySelector<HTMLElement>('img, video, [data-wipe-inner]');
     const st = { trigger: el, start: 'clamp(top 95%)', end: 'clamp(top 30%)', scrub: 0.3 };
-    gsap.fromTo(el, { clipPath: 'inset(22% 22% 22% 22% round 28px)' }, { clipPath: 'inset(0% 0% 0% 0% round 28px)', ease: 'none', scrollTrigger: st });
+    gsap.fromTo(el, { clipPath: 'inset(22% 22% 22% 22% round 28px)' }, { clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'none', scrollTrigger: st });
     if (inner) gsap.fromTo(inner, { scale: 1.5 }, { scale: 1, ease: 'none', scrollTrigger: { ...st } });
   });
 
@@ -381,17 +381,16 @@ function chainPanels(): (() => void) | void {
   };
 }
 
-/** Tarjetas apiladas: al cubrirla la siguiente, la anterior se encoge y se oscurece. Termina con la siguiente ya pegada. */
+/** Tarjetas apiladas: la foto entra con zoom y la tarjeta tapada se oscurece al cubrirla la siguiente. */
 function stackCards() {
   $$('[data-stack]').forEach((root) => {
     const cards = $$('[data-stack-card]', root);
-    cards.slice(0, -1).forEach((card, i) => {
+    cards.forEach((card, i) => {
+      const media = card.querySelector<HTMLElement>('[data-stack-media] img, [data-stack-media] video');
+      if (media) gsap.fromTo(media, { scale: 1.18 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: card, start: 'top bottom', end: 'top 30%', scrub: true } });
       const next = cards[i + 1];
-      const inner = card.querySelector<HTMLElement>('[data-stack-inner]');
       const dim = card.querySelector<HTMLElement>('[data-stack-dim]');
-      const st = { trigger: next, start: 'top 85%', end: 'top 24%', scrub: true };
-      if (inner) gsap.fromTo(inner, { scale: 1 }, { scale: 0.94, ease: 'none', scrollTrigger: st });
-      if (dim) gsap.fromTo(dim, { opacity: 0 }, { opacity: 0.55, ease: 'none', scrollTrigger: { ...st } });
+      if (next && dim) gsap.fromTo(dim, { opacity: 0 }, { opacity: 0.6, ease: 'none', scrollTrigger: { trigger: next, start: 'top 85%', end: 'top 24%', scrub: true } });
     });
   });
 }
